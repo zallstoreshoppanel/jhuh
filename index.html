@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sadap HP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            transition: background-image 1s ease-in-out;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        input, button, select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 16px;
+            text-align: center;
+            border-radius: 5px;
+            border: none;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        #status {
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        #controls {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .loading {
+            display: none;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        .progress-container {
+            display: none;
+            width: 100%;
+            background-color: #ddd;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 10px;
+            background-color: #007bff;
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+
+        #popupImage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+        }
+
+        #popupImage img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        #closePopup {
+            margin-top: 10px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sadap HP - Lewat IP</h1>
+        <p>Masukkan IP Device Target</p>
+        <input type="text" id="targetIP" placeholder="Contoh: 192.168.1.1">
+        <button onclick="startPrank()">🔥 Mulai Hack</button>
+        <div id="status"></div>
+        
+        <div id="controls">
+            <button onclick="fakeAction('Freeze HP')">❄️ Freeze HP</button>
+            <button onclick="fakeAction('Matikan HP')">🔌 Matikan HP</button>
+            <button onclick="fakeAction('Restart HP')">🔄 Restart HP</button>
+            <button onclick="fakeAction('Hapus Semua Data')">🗑️ Hapus Semua Data</button>
+            <button onclick="getRandomLocation()">📍 Cek Lokasi</button>
+            <button onclick="takeRandomPhoto()">📷 Ambil Foto</button>
+        </div>
+
+        <!-- Indikator proses -->
+        <div class="loading" id="loading">⏳ Proses berjalan...</div>
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+    </div>
+
+    <!-- Popup Gambar -->
+    <div id="popupImage">
+        <img id="randomPhoto" src="" alt="SEDANG PERBAIKAN">
+        <button id="closePopup" onclick="closePopup()">❌ Tutup</button>
+    </div>
+
+    <script>
+        function startPrank() {
+            let targetIP = document.getElementById("targetIP").value;
+            let statusDiv = document.getElementById("status");
+            let controlsDiv = document.getElementById("controls");
+
+            if (targetIP.trim() === "") {
+                targetIP = "192.168." + Math.floor(Math.random() * 255) + "." + Math.floor(Math.random() * 255);
+                document.getElementById("targetIP").value = targetIP;
+            }
+
+            statusDiv.innerHTML = "🔗 Menghubungkan ke " + targetIP + "...";
+
+            setTimeout(() => {
+                statusDiv.innerHTML = "✅ Akses diberikan ke " + targetIP + "!";
+                controlsDiv.style.display = "block";
+            }, 3000);
+        }
+
+        function fakeAction(action) {
+            let loadingDiv = document.getElementById("loading");
+            let progressContainer = document.getElementById("progressContainer");
+            let progressBar = document.getElementById("progressBar");
+
+            loadingDiv.style.display = "block";
+            progressContainer.style.display = "block";
+            progressBar.style.width = "0%";
+
+            let time = 0;
+            let interval = setInterval(() => {
+                time += 3.3;
+                progressBar.style.width = time + "%";
+                if (time >= 100) {
+                    clearInterval(interval);
+                    loadingDiv.style.display = "none";
+                    progressContainer.style.display = "none";
+                    alert(action + " berhasil! ");
+                }
+            }, 1000);
+        }
+
+        function getRandomLocation() {
+            let locations = [
+                "Jakarta (Jl. Sudirman)", "Bandung (Jl. Asia Afrika)", "Surabaya (Jl. Tunjungan)", 
+                "Medan (Jl. Gatot Subroto)", "Makassar (Jl. Pettarani)", "Bali (Jl. Sunset Road)",
+                "Yogyakarta (Jl. Malioboro)", "Semarang (Jl. Pahlawan)", "Banjarmasin (Jl. A. Yani)", 
+                "Balikpapan (Jl. Soekarno Hatta)"
+            ];
+            let randomLoc = locations[Math.floor(Math.random() * locations.length)];
+            fakeAction("Lokasi: " + randomLoc);
+        }
+
+        function takeRandomPhoto() {
+            let photos = [];
+            for (let i = 1; i <= 50; i++) {
+                photos.push(`https://source.unsplash.com/400x400/?face&sig=${i}`);
+            }
+
+            let randomPhoto = photos[Math.floor(Math.random() * photos.length)];
+            document.getElementById("randomPhoto").src = randomPhoto;
+            document.getElementById("popupImage").style.display = "block";
+        }
+
+        function closePopup() {
+            document.getElementById("popupImage").style.display = "none";
+        }
+    </script>
+</body>
+</html>
